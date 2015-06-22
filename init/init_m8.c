@@ -92,6 +92,23 @@ void vendor_load_properties()
         property_set("ro.product.device", "m8dugl");
         property_set("ro.product.model", "HTC One_M8 dual sim");
         property_set("ro.telephony.default_network", "9");
+    } else if (strstr(bootmid, "0PAJ50000")) {
+        /* Sprint (mecwhl) */
+        cdma_properties("1", "8", "310120", "Sprint");
+        property_set("ro.product.device", "htc_mecwhl");
+        property_set("ro.product.model", "0PAJ5");
+    } else if (strstr(bootmid, "0PAJ10000")) {
+        /* China Mobile (mectl) */
+        property_set("ro.product.device", "htc_mectl");
+        property_set("ro.product.model", "HTC One_E8");
+    } else if (strstr(bootmid, "0PAJ20000") || strstr(bootmid, "0PAJ21000")) {
+        /* China Unicom/Bangladesh (mecdugl) */
+        property_set("ro.product.device", "htc_mecdugl");
+        property_set("ro.product.model", "HTC One_E8 Dual Sim");
+    } else if (strstr(bootmid, "0PAJ40000")) {
+        /* China Telecom (mecdwgl) */
+        property_set("ro.product.device", "htc_mecdwgl");
+        property_set("ro.product.model", "HTC One_E8 Dual Sim");
     } else {
         /* m8 */
         property_set("ro.product.device", "m8");

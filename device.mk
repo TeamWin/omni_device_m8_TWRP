@@ -28,25 +28,8 @@ PRODUCT_PACKAGES += \
 
 # Recovery
 PRODUCT_PACKAGES += \
-    chargeled \
-    init.recovery.qcom.rc \
-    offmode_charging_res_images \
-    dt.img \
-    texfat.ko
+    chargeled
 # Time Zone data
 PRODUCT_COPY_FILES += \
     bionic/libc/zoneinfo/tzdata:recovery/root/system/usr/share/zoneinfo/tzdata
-# Hardware Keymaster
-PRODUCT_PACKAGES += \
-    cmnlib.b00 \
-    cmnlib.b01 \
-    cmnlib.b02 \
-    cmnlib.b03 \
-    cmnlib.mdt \
-    keymaster.b00 \
-    keymaster.b01 \
-    keymaster.b02 \
-    keymaster.b03 \
-    keymaster.mdt \
-    keystore.msm8974.so \
-    libQSEEComAPI.so
+
