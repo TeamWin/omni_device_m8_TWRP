@@ -53,8 +53,8 @@ BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom user
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_SEPARATED_DT := true
-BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x02008000 --dt device/htc/m8/recovery/kernel/dt.img --tags_offset 0x01e00000
-BOARD_CUSTOM_BOOTIMG_MK := device/htc/m8/recovery/kernel/mkbootimg.mk
+BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x02008000 --dt device/htc/m8/recovery/dt.img --tags_offset 0x01e00000
+BOARD_CUSTOM_BOOTIMG_MK := device/htc/m8/recovery/mkbootimg.mk
 
 # Partitions
 BOARD_BOOTIMAGE_PARTITION_SIZE := 274464768
@@ -72,8 +72,8 @@ BOARD_HAS_NO_SELECT_BUTTON := true
 BOARD_RECOVERY_SWIPE := true
 BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_23x41.h\"
 BOARD_USES_MMCUTILS := true
-TARGET_PREBUILT_KERNEL := device/htc/m8/recovery/kernel/kernel
-TARGET_RECOVERY_INITRC := device/htc/m8/recovery/etc/init.rc
+TARGET_PREBUILT_KERNEL := device/htc/m8/recovery/kernel
+TARGET_RECOVERY_INITRC := device/htc/m8/recovery/init.rc
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 RECOVERY_GRAPHICS_USE_LINELENGTH := true
 
