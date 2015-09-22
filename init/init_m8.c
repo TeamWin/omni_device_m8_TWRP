@@ -56,9 +56,9 @@ void vendor_load_properties()
     if (strstr(bootmid, "0P6B20000")) {
         /* m8vzw (m8wl) */
         cdma_properties("0", "10", "310012", "Verizon");
-        property_set("ro.product.device", "m8wl");
+        property_set("ro.product.device", "htc_m8wl");
         property_set("ro.product.model", "HTC6525LVW");
-        property_set("ro.build.product", "m8wl");
+        property_set("ro.build.product", "htc_m8wl");
         property_set("ro.ril.vzw.feature", "1");
         property_set("ro.ril.oem.ecclist", "911,*911,#911");
         property_set("ro.ril.enable.a52", "0");
@@ -79,9 +79,9 @@ void vendor_load_properties()
     } else if (strstr(bootmid, "0P6B70000")) {
         /* m8spr (m8whl) */
         cdma_properties("1", "8", "310120", "Sprint");
-        property_set("ro.product.device", "m8whl");
+        property_set("ro.product.device", "htc_m8whl");
         property_set("ro.product.model", "831C");
-        property_set("ro.build.product", "m8whl");
+        property_set("ro.build.product", "htc_m8whl");
         property_set("telephony.sms.pseudo_multipart", "1");
         property_set("ro.ril.oem.ecclist", "911");
         property_set("ro.ril.enable.pre_r8fd=1", "1");
@@ -132,8 +132,8 @@ void vendor_load_properties()
         property_set("ro.product.model", "HTC One_E8 Dual Sim");
     } else {
         /* m8 */
-        property_set("ro.build.product", "m8");
-        property_set("ro.product.device", "m8");
+        property_set("ro.build.product", "htc_m8");
+        property_set("ro.product.device", "htc_m8");
         property_set("ro.product.model", "HTC One_M8");
         property_set("ro.telephony.default_network", "9");
         property_set("telephony.lteOnGsmDevice", "1");
