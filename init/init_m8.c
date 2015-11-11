@@ -87,17 +87,23 @@ void vendor_load_properties()
         property_set("ro.ril.enable.pre_r8fd=1", "1");
         property_set("ro.ril.enable.sdr", "0");
         property_set("ro.ril.set.mtusize", "1422");
-    } else if (strstr(bootmid, "0P6B61000") || strstr(bootmid, "0P6B64000")) {
-        /* m8dug */
+    } else if (strstr(bootmid, "0P6B61000")) {
+        /* China Unicom (m8dug) */
+        property_set("ro.build.product", "htc_m8dug");
+        property_set("ro.product.device", "htc_m8dug");
+        property_set("ro.product.model", "HTC M8e");
+        property_set("ro.telephony.default_network", "9");
+    } else if (strstr(bootmid, "0P6B64000") || strstr(bootmid, "0P6B68000")) {
+        /* International (m8dug) */
         property_set("ro.build.product", "htc_m8dug");
         property_set("ro.product.device", "htc_m8dug");
         property_set("ro.product.model", "HTC One_M8 dual sim");
         property_set("ro.telephony.default_network", "9");
     } else if (strstr(bootmid, "0P6B41000")) {
-        /* m8dwg */
+        /* China Telecom (m8dwg) */
         property_set("ro.build.product", "htc_m8dwg");
         property_set("ro.product.device", "htc_m8dwg");
-        property_set("ro.product.model", "HTC One_M8 dual sim");
+        property_set("ro.product.model", "HTC M8d");
         property_set("ro.telephony.default_network", "10");
     } else if (strstr(bootmid, "0PAJ50000")) {
         /* Sprint (mecwhl) */

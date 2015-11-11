@@ -29,9 +29,9 @@
 # 0P6B70000 - Sprint
 
 # Model Ids (Dual SIM variants)
-# 0P6B41000 - Chinese CDMA version
-# 0P6B61000 - Chinese GSM version
-# 0P6B64000 - European GSM version
+# 0P6B41000 - Chinese (China Telecom) LTE/EV-DO/CDMA + GSM version
+# 0P6B61000 - Chinese (China Unicom) LTE/WCDMA/GSM + GSM version
+# 0P6B64000 / 0P6B68000 - International LTE/WCDMA/GSM + GSM version
 
 BOARD_VENDOR := htc
 
