@@ -1,6 +1,16 @@
-on early-init
+on init
     # exfat
     insmod /system/lib/modules/texfat.ko
+
+on fs
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/idVendor 0bb4
+    write /sys/class/android_usb/android0/idProduct 0f87
+    write /sys/class/android_usb/android0/f_ffs/aliases adb
+    write /sys/class/android_usb/android0/functions mtp,adb
+    write /sys/class/android_usb/android0/iManufacturer ${ro.product.manufacturer}
+    write /sys/class/android_usb/android0/iProduct ${ro.product.model}
+    write /sys/class/android_usb/android0/iSerial ${ro.serialno}
 
 on boot
     write /sys/devices/platform/android_usb/usb_function_switch 130
@@ -8,15 +18,33 @@ on boot
     start choice_fn
     start chargeled
 
+on property:sys.usb.config=none
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/bDeviceClass 0
+
+on property:sys.usb.config=mass_storage,adb
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/functions ${sys.usb.config}
+    write /sys/class/android_usb/android0/enable 1
+
+on property:sys.usb.config=mtp,adb
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/functions ${sys.usb.config}
+    write /sys/class/android_usb/android0/enable 1
+    start adbd
+    write /sys/devices/platform/android_usb/usb_function_switch 130
+    setprop sys.usb.state ${sys.usb.config}
+
 on property:sys.usb.config=adb
+    write /sys/class/android_usb/android0/enable 0
+    write /sys/class/android_usb/android0/functions ${sys.usb.config}
+    write /sys/class/android_usb/android0/enable ${service.adb.root}
+    start adbd
     write /sys/class/android_usb/android0/f_ffs/on 1
     write /sys/class/android_usb/android0/f_adb/on 1
     write /sys/devices/platform/android_usb/usb_function_switch 3
     setprop sys.usb.state ${sys.usb.config}
 
-on property:sys.usb.config=mtp,adb
-    write /sys/devices/platform/android_usb/usb_function_switch 130
-    setprop sys.usb.state ${sys.usb.config}
 
 service chargeled /sbin/chargeled
     disabled

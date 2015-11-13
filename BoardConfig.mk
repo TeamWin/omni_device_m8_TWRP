@@ -89,9 +89,6 @@ TW_INCLUDE_CRYPTO := true
 TW_NO_EXFAT_FUSE := true
 TW_NO_SCREEN_BLANK := true
 
-# USB
-TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/devices/msm_dwc3/f9200000.dwc3/gadget/lun%d/file
-
 # Vendor Init
 TARGET_UNIFIED_DEVICE := true
 TARGET_INIT_VENDOR_LIB := libinit_m8
