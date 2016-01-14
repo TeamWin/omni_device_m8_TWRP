@@ -53,11 +53,11 @@ TARGET_CPU_VARIANT := krait
 TARGET_USE_KRAIT_BIONIC_OPTIMIZATION := true
 
 # Kernel
-BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 zcache androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=30 msm_rtb.filter=0x3b7 ehci-hcd.park=3 androidboot.selinux=permissive
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_KERNEL_SEPARATED_DT := true
-BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x02008000 --dt device/htc/m8/recovery/dt.img --tags_offset 0x01e00000
+BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x02000000 --dt device/htc/m8/recovery/dt.img --tags_offset 0x01e00000
 BOARD_CUSTOM_BOOTIMG_MK := device/htc/m8/recovery/mkbootimg.mk
 
 # Partitions
@@ -74,22 +74,25 @@ BOARD_HAS_LARGE_FILESYSTEM := true
 BOARD_HAS_NO_MISC_PARTITION := true
 BOARD_HAS_NO_SELECT_BUTTON := true
 BOARD_RECOVERY_SWIPE := true
-BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_23x41.h\"
+BOARD_SUPPRESS_SECURE_ERASE := true
 BOARD_USES_MMCUTILS := true
 TARGET_PREBUILT_KERNEL := device/htc/m8/recovery/kernel
-TARGET_RECOVERY_INITRC := device/htc/m8/recovery/init.rc
-TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
-RECOVERY_GRAPHICS_USE_LINELENGTH := true
+TARGET_RECOVERY_DEVICE_MODULES := chargeled # strace twrpdec
+#TW_RECOVERY_ADDITIONAL_RELINK_FILES := $(OUT)/utilities/strace $(OUT)/recovery/root/sbin/twrpdec
+#TARGET_USES_LOGD := true
 
 # TWRP Build Flags
 BOARD_RECOVERY_BLDRMSG_OFFSET := 2048
+TW_EXCLUDE_DEFAULT_USB_INIT := true
 TW_THEME := portrait_hdpi
 TW_INCLUDE_DUMLOCK := true
 TW_INCLUDE_CRYPTO := true
+TW_INCLUDE_NTFS_3G := true
 TW_NO_EXFAT_FUSE := true
-TW_NO_SCREEN_BLANK := true
+#TWRP_EVENT_LOGGING := true
+#TWRP_INCLUDE_LOGCAT := true
 
 # Vendor Init
 TARGET_UNIFIED_DEVICE := true
 TARGET_INIT_VENDOR_LIB := libinit_msm
-TARGET_LIBINIT_DEFINES_FILE := device/htc/m8/init/init_m8.c
+TARGET_LIBINIT_DEFINES_FILE := device/htc/m8/recovery/init/init_m8.cpp
