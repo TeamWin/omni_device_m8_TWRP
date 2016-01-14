@@ -45,6 +45,8 @@ on property:sys.usb.config=adb
     write /sys/devices/platform/android_usb/usb_function_switch 3
     setprop sys.usb.state ${sys.usb.config}
 
+on property:ro.bootmode=offmode_charging
+    stop recovery
 
 service chargeled /sbin/chargeled
     disabled
@@ -62,8 +64,3 @@ service detect_key /sbin/detect_key
 service offmode_charging /sbin/offmode_charging
     disabled
     seclabel u:r:healthd:s0
-
-service power_test /sbin/power_test
-    disabled
-    oneshot
-    seclabel u:r:recovery:s0
