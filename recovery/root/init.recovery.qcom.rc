@@ -12,6 +12,9 @@ on fs
     write /sys/class/android_usb/android0/iProduct ${ro.product.model}
     write /sys/class/android_usb/android0/iSerial ${ro.serialno}
 
+    # Pull props from build.prop
+    start setprops
+
 on boot
     write /sys/devices/platform/android_usb/usb_function_switch 130
 
@@ -47,6 +50,13 @@ on property:sys.usb.config=adb
 
 on property:ro.bootmode=offmode_charging
     stop recovery
+
+service setprops /sbin/setprops.sh
+    oneshot
+    disabled
+    user root
+    group root
+    seclabel u:r:recovery:s0
 
 service chargeled /sbin/chargeled
     disabled

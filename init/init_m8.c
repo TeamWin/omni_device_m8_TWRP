@@ -83,7 +83,6 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
         common_properties();
         cdma_properties("0", "10");
         property_set("ro.product.model", "HTC6525LVW");
-        property_set("ro.product.device", "htc_m8wl");
         property_set("ro.build.product", "htc_m8wl");
         property_set("ro.ril.vzw.feature", "1");
         property_set("ro.ril.oem.ecclist", "911,*911,#911");
@@ -108,7 +107,6 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
         common_properties();
         cdma_properties("1", "8");
         property_set("ro.product.model", "831C");
-        property_set("ro.product.device", "htc_m8whl");
         property_set("ro.build.product", "htc_m8whl");
         property_set("telephony.sms.pseudo_multipart", "1");
         property_set("ro.ril.enable.pre_r8fd", "1");
@@ -126,70 +124,60 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
         common_properties();
         gsm_properties("9");
         property_set("ro.build.product", "htc_m8dug");
-        property_set("ro.product.device", "htc_m8dug");
         property_set("ro.product.model", "HTC M8e");
     } else if (strstr(bootmid, "0P6B64000") || strstr(bootmid, "0P6B68000")) {
         /* International (m8dug) */
         common_properties();
         gsm_properties("9");
         property_set("ro.build.product", "htc_m8dug");
-        property_set("ro.product.device", "htc_m8dug");
         property_set("ro.product.model", "HTC One_M8 dual sim");
     } else if (strstr(bootmid, "0P6B41000")) {
         /* China Telecom (m8dwg) */
         common_properties();
         gsm_properties("10");
         property_set("ro.build.product", "htc_m8dwg");
-        property_set("ro.product.device", "htc_m8dwg");
         property_set("ro.product.model", "HTC M8d");
     } else if (strstr(bootmid, "0PAJ50000")) {
         /* Sprint (mecwhl) */
         common_properties();
         cdma_properties("1", "8");
         property_set("ro.build.product", "htc_mecwhl");
-        property_set("ro.product.device", "htc_mecwhl");
         property_set("ro.product.model", "0PAJ5");
     } else if (strstr(bootmid, "0PAJ10000")) {
         /* China Mobile (mectl) */
         common_properties();
         gsm_properties("9");
         property_set("ro.build.product", "htc_mectl");
-        property_set("ro.product.device", "htc_mectl");
         property_set("ro.product.model", "HTC One_E8");
     } else if (strstr(bootmid, "0PAJ20000") || strstr(bootmid, "0PAJ21000") || strstr(bootmid, "0PAJ22000")) {
         /* China Unicom/Bangladesh (mecdugl) */
         common_properties();
         gsm_properties("9");
         property_set("ro.build.product", "htc_mecdugl");
-        property_set("ro.product.device", "htc_mecdugl");
         property_set("ro.product.model", "HTC One_E8 Dual Sim");
     } else if (strstr(bootmid, "0PAJ30000")) {
         /* Europe (mecul_emea) */
         common_properties();
         gsm_properties("9");
         property_set("ro.build.product", "htc_mecul_emea");
-        property_set("ro.product.device", "htc_mecul_emea");
         property_set("ro.product.model", "HTC One_E8");
     } else if (strstr(bootmid, "0PAJ31000")) {
         /* Singapore/Vietnam/Europe MMR (mecul) */
         common_properties();
         gsm_properties("9");
         property_set("ro.build.product", "htc_mecul");
-        property_set("ro.product.device", "htc_mecul");
         property_set("ro.product.model", "HTC One_E8");
     } else if (strstr(bootmid, "0PAJ40000")) {
         /* China Telecom (mecdwgl) */
         common_properties();
         gsm_properties("10");
         property_set("ro.build.product", "htc_mecdwgl");
-        property_set("ro.product.device", "htc_mecdwgl");
         property_set("ro.product.model", "HTC One_E8 Dual Sim");
     } else {
         /* m8 */
         common_properties();
         gsm_properties("9");
         property_set("ro.build.product", "htc_m8");
-        property_set("ro.product.device", "htc_m8");
         property_set("ro.product.model", "HTC One_M8");
     }
 
