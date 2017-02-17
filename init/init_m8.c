@@ -34,6 +34,84 @@
 #include "log.h"
 #include "util.h"
 
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <errno.h>
+#include <sys/stat.h>
+#include <sys/mount.h>
+
+#define DEV_BLOCK_SYSTEM "/dev/block/bootdevice/by-name/system"
+
+void set_props_from_file(const char *filename)
+{
+    int IsSet_ro_product_device = 0;
+    FILE *fp = fopen(filename, "r");
+
+    if (fp) {
+        char line[1024];
+
+        char propname[PROP_NAME_MAX];
+        char propvalue[PROP_VALUE_MAX];
+        char *pch;
+
+        while ((fgets(line, sizeof(line), fp))) {
+            if (line[0] == '\n' || line[0] == '#') continue;
+
+            pch = strtok(line, "=\n");
+            if (!pch || strlen(pch) >= PROP_NAME_MAX) continue;
+            strcpy(propname, pch);
+
+            pch = strtok(NULL, "=\n");
+            if (!pch || strlen(pch) >= PROP_VALUE_MAX) continue;
+            strcpy(propvalue, pch);
+
+            if (strcmp(propname, "ro.build.fingerprint") == 0) {
+                property_set(propname, propvalue);
+            }
+            else if (strcmp(propname, "ro.product.device") == 0) {
+                property_set(propname, propvalue);
+                IsSet_ro_product_device = 1;
+            }
+        }
+        fclose(fp);
+    }
+
+    if (!IsSet_ro_product_device) {
+#ifdef GETPROP_RETURNS_STRING
+        std::string propvalue;
+        propvalue = property_get("ro.build.product");
+        property_set("ro.product.device", propvalue.c_str());
+#else
+        char propvalue[PROP_VALUE_MAX];
+        property_get("ro.build.product", propvalue);
+        property_set("ro.product.device", propvalue);
+#endif
+    }
+}
+
+void set_props_from_build(void)
+{
+    if (access("/system/build.prop", R_OK) == 0) {
+        set_props_from_file("/system/build.prop");
+        return;
+    }
+
+    if (mkdir("/tmpsys", 777) != 0)
+        return;
+
+    int is_mounted = mount(DEV_BLOCK_SYSTEM, "/tmpsys", "ext4", MS_RDONLY | MS_NOATIME , "") == 0;
+
+    if (!is_mounted)
+        is_mounted = mount(DEV_BLOCK_SYSTEM, "/tmpsys", "f2fs", MS_RDONLY | MS_NOATIME , "") == 0;
+
+    if (is_mounted) {
+        set_props_from_file("/tmpsys/build.prop");
+        umount("/tmpsys");
+    }
+    rmdir("/tmpsys");
+}
+
 void common_properties()
 {
     property_set("rild.libargs", "-d /dev/smd0");
@@ -64,7 +142,7 @@ void gsm_properties(char default_network[])
     property_set("telephony.lteOnGsmDevice", "1");
 }
 
-void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *board_type)
+void vendor_load_properties()
 {
     char platform[PROP_VALUE_MAX];
     char bootmid[PROP_VALUE_MAX];
@@ -83,7 +161,6 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
         common_properties();
         cdma_properties("0", "10");
         property_set("ro.product.model", "HTC6525LVW");
-        property_set("ro.product.device", "htc_m8wl");
         property_set("ro.build.product", "htc_m8wl");
         property_set("ro.ril.vzw.feature", "1");
         property_set("ro.ril.oem.ecclist", "911,*911,#911");
@@ -108,7 +185,6 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
         common_properties();
         cdma_properties("1", "8");
         property_set("ro.product.model", "831C");
-        property_set("ro.product.device", "htc_m8whl");
         property_set("ro.build.product", "htc_m8whl");
         property_set("telephony.sms.pseudo_multipart", "1");
         property_set("ro.ril.enable.pre_r8fd", "1");
@@ -126,72 +202,64 @@ void init_msm_properties(unsigned long msm_id, unsigned long msm_ver, char *boar
         common_properties();
         gsm_properties("9");
         property_set("ro.build.product", "htc_m8dug");
-        property_set("ro.product.device", "htc_m8dug");
         property_set("ro.product.model", "HTC M8e");
     } else if (strstr(bootmid, "0P6B64000") || strstr(bootmid, "0P6B68000")) {
         /* International (m8dug) */
         common_properties();
         gsm_properties("9");
         property_set("ro.build.product", "htc_m8dug");
-        property_set("ro.product.device", "htc_m8dug");
         property_set("ro.product.model", "HTC One_M8 dual sim");
     } else if (strstr(bootmid, "0P6B41000")) {
         /* China Telecom (m8dwg) */
         common_properties();
         gsm_properties("10");
         property_set("ro.build.product", "htc_m8dwg");
-        property_set("ro.product.device", "htc_m8dwg");
         property_set("ro.product.model", "HTC M8d");
     } else if (strstr(bootmid, "0PAJ50000")) {
         /* Sprint (mecwhl) */
         common_properties();
         cdma_properties("1", "8");
         property_set("ro.build.product", "htc_mecwhl");
-        property_set("ro.product.device", "htc_mecwhl");
         property_set("ro.product.model", "0PAJ5");
     } else if (strstr(bootmid, "0PAJ10000")) {
         /* China Mobile (mectl) */
         common_properties();
         gsm_properties("9");
         property_set("ro.build.product", "htc_mectl");
-        property_set("ro.product.device", "htc_mectl");
         property_set("ro.product.model", "HTC One_E8");
     } else if (strstr(bootmid, "0PAJ20000") || strstr(bootmid, "0PAJ21000") || strstr(bootmid, "0PAJ22000")) {
         /* China Unicom/Bangladesh (mecdugl) */
         common_properties();
         gsm_properties("9");
         property_set("ro.build.product", "htc_mecdugl");
-        property_set("ro.product.device", "htc_mecdugl");
         property_set("ro.product.model", "HTC One_E8 Dual Sim");
     } else if (strstr(bootmid, "0PAJ30000")) {
         /* Europe (mecul_emea) */
         common_properties();
         gsm_properties("9");
         property_set("ro.build.product", "htc_mecul_emea");
-        property_set("ro.product.device", "htc_mecul_emea");
         property_set("ro.product.model", "HTC One_E8");
     } else if (strstr(bootmid, "0PAJ31000")) {
         /* Singapore/Vietnam/Europe MMR (mecul) */
         common_properties();
         gsm_properties("9");
         property_set("ro.build.product", "htc_mecul");
-        property_set("ro.product.device", "htc_mecul");
         property_set("ro.product.model", "HTC One_E8");
     } else if (strstr(bootmid, "0PAJ40000")) {
         /* China Telecom (mecdwgl) */
         common_properties();
         gsm_properties("10");
         property_set("ro.build.product", "htc_mecdwgl");
-        property_set("ro.product.device", "htc_mecdwgl");
         property_set("ro.product.model", "HTC One_E8 Dual Sim");
     } else {
         /* m8 */
         common_properties();
         gsm_properties("9");
         property_set("ro.build.product", "htc_m8");
-        property_set("ro.product.device", "htc_m8");
         property_set("ro.product.model", "HTC One_M8");
     }
+
+    set_props_from_build();
 
     property_get("ro.product.device", device);
     ERROR("Found bootmid %s setting build properties for %s device\n", bootmid, device);
