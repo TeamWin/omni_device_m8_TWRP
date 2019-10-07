@@ -34,5 +34,5 @@ $(call inherit-product, vendor/omni/config/common.mk)
 PRODUCT_DEVICE := m8
 PRODUCT_NAME := omni_m8
 PRODUCT_BRAND := htc
-PRODUCT_MODEL := HTC One M8
+PRODUCT_MODEL := HTC One_M8
 PRODUCT_MANUFACTURER := htc
