@@ -1,3 +1,5 @@
+import /init.recovery.qcom_decrypt.fbe.rc
+
 on fs
     # needed to make qseecomd work in recovery
     chmod 0660 /dev/qseecom
@@ -20,6 +22,7 @@ on property:init.svc.sbinqseecomd=running && property:vendor.sys.listeners.regis
 on property:init.svc.sbinhwservicemanager=running && property:hwservicemanager.ready=true
     start sbinkeymaster-3-0
     start sbinkeymaster-3-0-qti
+    start sbinkeymaster-4-0-qti
 
 on property:ro.crypto.fs_crypto_blkdev=*
     setprop crypto.ready 0
@@ -27,6 +30,7 @@ on property:ro.crypto.fs_crypto_blkdev=*
     stop sbinhwservicemanager
     stop sbinkeymaster-3-0
     stop sbinkeymaster-3-0-qti
+    stop sbinkeymaster-4-0-qti
 
 service prepdecrypt /sbin/prepdecrypt.sh
     user root
@@ -57,6 +61,13 @@ service sbinkeymaster-3-0 /sbin/android.hardware.keymaster@3.0-service
     seclabel u:r:recovery:s0
 
 service sbinkeymaster-3-0-qti /sbin/android.hardware.keymaster@3.0-service-qti
+    user root
+    group root
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/sbin
+    disabled
+    seclabel u:r:recovery:s0
+
+service sbinkeymaster-4-0-qti /sbin/android.hardware.keymaster@4.0-service-qti
     user root
     group root
     setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/sbin
