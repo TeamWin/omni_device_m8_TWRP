@@ -33,14 +33,18 @@
 # 0P6B61000 - Chinese (China Unicom) LTE/WCDMA/GSM + GSM version
 # 0P6B64000 / 0P6B68000 - International LTE/WCDMA/GSM + GSM version
 
+# OEM Info
 BOARD_VENDOR := htc
+
+# Default device path
+DEVICE_PATH := device/$(BOARD_VENDOR)/$(TARGET_DEVICE)
 
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := MSM8974
 TARGET_NO_BOOTLOADER := true
 
 # Platform
-TARGET_BOARD_PLATFORM := msm8974
+TARGET_BOARD_PLATFORM := $(shell echo $(TARGET_BOOTLOADER_BOARD_NAME) | tr  '[:upper:]' '[:lower:]')
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno330
 
 # Architecture
@@ -53,11 +57,27 @@ TARGET_CPU_VARIANT := krait
 TARGET_USE_KRAIT_BIONIC_OPTIMIZATION := true
 
 # Kernel
-BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 zcache androidboot.bootdevice=msm_sdcc.1 androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE := \
+    androidboot.bootdevice=msm_sdcc.1 \
+    androidboot.hardware=qcom \
+    androidboot.selinux=permissive \
+    console=ttyHSL0,115200,n8 \
+    ehci-hcd.park=3 \
+    user_debug=31 \
+    zcache
 BOARD_KERNEL_BASE := 0x00000000
+BOARD_KERNEL_DT := $(DEVICE_PATH)/prebuilt/dtb
+BOARD_KERNEL_IMAGE_NAME := zImage
+BOARD_KERNEL_OFFSET := 0x00008000
+BOARD_KERNEL_RAMDISK_OFFSET := 0x02008000
+BOARD_KERNEL_TAGS_OFFSET := 0x01e00000
 BOARD_KERNEL_PAGESIZE := 2048
-BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x02008000 --tags_offset 0x01e00000 --dt device/$(BOARD_VENDOR)/$(TARGET_DEVICE)/prebuilt/dtb
-TARGET_PREBUILT_KERNEL := device/$(BOARD_VENDOR)/$(TARGET_DEVICE)/prebuilt/zImage
+BOARD_MKBOOTIMG_ARGS := \
+    --dt $(BOARD_KERNEL_DT) \
+    --kernel_offset $(BOARD_KERNEL_OFFSET) \
+    --ramdisk_offset $(BOARD_KERNEL_RAMDISK_OFFSET) \
+    --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
+TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/$(BOARD_KERNEL_IMAGE_NAME)
 
 # Partitions
 BOARD_BOOTIMAGE_PARTITION_SIZE := 16777216
@@ -82,6 +102,7 @@ BOARD_HAS_NO_SELECT_BUTTON := true
 BOARD_NEEDS_LZMA_MINIGZIP := true
 BOARD_RECOVERY_SWIPE := true
 BOARD_USES_MMCUTILS := true
+BOARD_USES_QCOM_DECRYPTION := true
 BOOTLOADER_MESSAGE_OFFSET := 2048
 
 # TWRP Build Flags
@@ -90,16 +111,14 @@ TW_EXCLUDE_DEFAULT_USB_INIT := true
 TW_INCLUDE_CRYPTO := true
 TW_OVERRIDE_SYSTEM_PROPS := "ro.build.fingerprint"
 TW_NO_EXFAT_FUSE := true
-TARGET_RECOVERY_DEVICE_MODULES := chargeled liblog_htc_sbin tzdata
-TW_RECOVERY_ADDITIONAL_RELINK_FILES += $(TARGET_OUT)/usr/share/zoneinfo/tzdata
 TW_USE_TOOLBOX := true
 
 # TWRP Debugging
 #TWRP_EVENT_LOGGING := true
-#TARGET_USES_LOGD := true
-#TWRP_INCLUDE_LOGCAT := true
-#TARGET_RECOVERY_DEVICE_MODULES += debuggerd
-#TW_RECOVERY_ADDITIONAL_RELINK_FILES += $(TARGET_OUT)/bin/debuggerd
+TARGET_USES_LOGD := true
+TWRP_INCLUDE_LOGCAT := true
+TARGET_RECOVERY_DEVICE_MODULES += debuggerd
+TW_RECOVERY_ADDITIONAL_RELINK_FILES += $(TARGET_OUT)/bin/debuggerd
 #TARGET_RECOVERY_DEVICE_MODULES += strace
 #TW_RECOVERY_ADDITIONAL_RELINK_FILES += $(TARGET_OUT)/xbin/strace
 #TW_CRYPTO_SYSTEM_VOLD_DEBUG := true
@@ -107,4 +126,3 @@ TW_USE_TOOLBOX := true
 
 # Vendor Init
 TARGET_INIT_VENDOR_LIB := libinit_$(TARGET_DEVICE)
-
