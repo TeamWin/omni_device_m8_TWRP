@@ -3,7 +3,7 @@
     "remote":      "github",
     "repository":  "TeamWin/android_device_qcom_htc-common",
     "target_path": "device/qcom/htc-common",
-    "revision":    "android-7.1"
+    "revision":    "android-6.0"
   },
   {
     "remote":      "github",
