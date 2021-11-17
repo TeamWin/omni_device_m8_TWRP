@@ -1,6 +1,11 @@
+import /init.recovery.qcom_decrypt.rc
+
 on init
-    # exfat
-    insmod /system/lib/modules/texfat.ko
+    wait /dev/block/platform/${ro.boot.bootdevice}
+    symlink /dev/block/platform/${ro.boot.bootdevice} /dev/block/bootdevice
+
+on fs
+    export LD_PRELOAD /sbin/liblog_htc_sbin.so
 
 on boot
     start choice_fn
@@ -8,6 +13,8 @@ on boot
 
 on property:ro.bootmode=offmode_charging
     stop recovery
+    start detect_key
+    start offmode_charging
 
 service chargeled /sbin/chargeled
     disabled
@@ -25,8 +32,3 @@ service detect_key /sbin/detect_key
 service offmode_charging /sbin/offmode_charging
     disabled
     seclabel u:r:healthd:s0
-
-service power_test /sbin/power_test
-    disabled
-    oneshot
-    seclabel u:r:recovery:s0
