@@ -33,14 +33,15 @@
 # 0P6B61000 - Chinese (China Unicom) LTE/WCDMA/GSM + GSM version
 # 0P6B64000 / 0P6B68000 - International LTE/WCDMA/GSM + GSM version
 
-BOARD_VENDOR := htc
+# Default device path
+DEVICE_PATH := device/$(PRODUCT_BRAND)/$(TARGET_DEVICE)
 
 # Bootloader
-TARGET_BOOTLOADER_BOARD_NAME := MSM8974
+TARGET_BOOTLOADER_BOARD_NAME := $(shell echo $(PRODUCT_PLATFORM) | tr  '[:lower:]' '[:upper:]')
 TARGET_NO_BOOTLOADER := true
 
 # Platform
-TARGET_BOARD_PLATFORM := msm8974
+TARGET_BOARD_PLATFORM := $(PRODUCT_PLATFORM)
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno330
 
 # Architecture
@@ -56,7 +57,7 @@ TARGET_USE_KRAIT_BIONIC_OPTIMIZATION := true
 BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.hardware=qcom user_debug=31 ehci-hcd.park=3 zcache androidboot.selinux=permissive
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_PAGESIZE := 2048
-BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x02008000 --dt device/$(BOARD_VENDOR)/$(TARGET_DEVICE)/prebuilt/dt.img --tags_offset 0x01e00000
+BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x02008000 --dt $(DEVICE_PATH)/prebuilt/dt.img --tags_offset 0x01e00000
 
 # Partitions
 BOARD_BOOTIMAGE_PARTITION_SIZE := 16777216
@@ -74,10 +75,9 @@ BOARD_HAS_NO_SELECT_BUTTON := true
 BOARD_NEEDS_LZMA_MINIGZIP := true
 BOARD_RECOVERY_SWIPE := true
 BOARD_USES_MMCUTILS := true
-COMMON_GLOBAL_CPPFLAGS += -DBOARD_RECOVERY_BLDRMSG_OFFSET=2048
-TARGET_PREBUILT_KERNEL := device/$(BOARD_VENDOR)/$(TARGET_DEVICE)/prebuilt/kernel
-TARGET_RECOVERY_DEVICE_MODULES := chargeled tzdata
-TW_RECOVERY_ADDITIONAL_RELINK_FILES += $(TARGET_OUT)/usr/share/zoneinfo/tzdata
+BOOTLOADER_MESSAGE_OFFSET := 2048
+TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/prebuilt/kernel
+TARGET_RECOVERY_DEVICE_MODULES := chargeled
 
 # TWRP Build Flags
 TW_THEME := portrait_hdpi
@@ -91,4 +91,3 @@ TW_NO_SCREEN_BLANK := true
 # Vendor Init
 TARGET_INIT_VENDOR_LIB := libinit_$(TARGET_DEVICE)
 TARGET_UNIFIED_DEVICE := true
-
