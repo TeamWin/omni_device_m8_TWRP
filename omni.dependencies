@@ -1,19 +1,19 @@
 [
   {
-    "remote":      "TeamWin",
-    "repository":  "android_device_qcom_htc-common",
+    "remote":      "github",
+    "repository":  "TeamWin/android_device_qcom_htc-common",
     "target_path": "device/qcom/htc-common",
     "revision":    "android-6.0"
   },
   {
-    "remote":      "TeamWin",
-    "repository":  "android_device_qcom_common",
+    "remote":      "github",
+    "repository":  "TeamWin/android_device_qcom_common",
     "target_path": "device/qcom/common",
     "revision":    "android-6.0"
   },
   {
-    "remote":      "TeamWin",
-    "repository":  "android_device_qcom_twrp-common",
+    "remote":      "github",
+    "repository":  "TeamWin/android_device_qcom_twrp-common",
     "target_path": "device/qcom/twrp-common",
     "revision":    "android-6.0"
   }
